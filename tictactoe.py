@@ -1,5 +1,3 @@
-
-
 def DrawBoard(board):
 
     print('   |   |')
@@ -22,7 +20,7 @@ def start_game():
             print('good bye!')
             break
         else:
-            print('lets go!')
+            print("let's go!")
             playerOne_name = input('Input player 1 name: ')
             palyerTwo_name = input('Input player 2 name: ')
             while True:
@@ -109,8 +107,3 @@ def rules(board, move):
         print('Not a A Valid Move!')
         DrawBoard(board)
         return True
-
-
-start_game()
-
-
