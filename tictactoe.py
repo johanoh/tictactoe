@@ -1,3 +1,6 @@
+import random
+
+
 def DrawBoard(board):
 
     print('   |   |')
@@ -20,21 +23,30 @@ def start_game():
             print('good bye!')
             break
         else:
-            print("let's go!")
-            playerOne_name = input('Input player 1 name: ')
-            palyerTwo_name = input('Input player 2 name: ')
-            while True:
-                if tictactoe(playerOne_name, palyerTwo_name):
-                    break
+            answer_1 = input('Do you want to play against AI [y/n]? ')
+            if answer_1 == 'y':
+                print("let's go!")
+                playerOne_name = input('Input player 1 name: ')
+                while True:
+                    if tictactoe(playerOne_name, playerTwo_name='AI', ai=True):
+                        break
+            else:
+                print("let's go!")
+                playerOne_name = input('Input player 1 name: ')
+                palyerTwo_name = input('Input player 2 name: ')
+                while True:
+                    if tictactoe(playerOne_name, palyerTwo_name, ai=False):
+                        break
 
 
-def tictactoe(playerOne_name, playerTwo_name):
+def tictactoe(playerOne_name, playerTwo_name, ai=None):
     board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    ai_move_set = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     DrawBoard(board)
     count = 0
     while True:
         if win_conditions(board):
-            if (count%2) != 0:
+            if (count % 2) != 0:
                 print(playerOne_name + ' is the winner!')
             else:
                 print(playerTwo_name + ' is the winner')
@@ -53,15 +65,28 @@ def tictactoe(playerOne_name, playerTwo_name):
 
         elif (count % 2) != 0:
             print(playerTwo_name + "'s" + ' turn')
-            move = int(input('Please input move! ')) - 1
-            while True:
-                if rules(board, move):
-                    break
-                else:
-                    board[move] = 'O'
-                    count += 1
-                    DrawBoard(board)
-                    break
+            if ai is False:
+                move = int(input('Please input move! ')) - 1
+                while True:
+                    if rules(board, move):
+                        break
+                    else:
+                        board[move] = 'O'
+                        count += 1
+                        DrawBoard(board)
+                        break
+            else:
+                print(ai_move_set)
+                move = random.choice(ai_move_set) + 1
+                while True:
+                    if rules(board, move):
+                        break
+                    else:
+                        board[move] = 'O'
+                        count += 1
+                        DrawBoard(board)
+                        ai_move_set.remove(move - 1)
+                        break
 
 
 def win_conditions(board):
@@ -95,15 +120,16 @@ def rules(board, move):
     try:
         if board[move] == 'X':
             print('Already Taken!')
-            DrawBoard(board)
             return True
         elif board[move] == 'O':
             print('Already Taken!')
-            DrawBoard(board)
             return True
         else:
             return False
     except(ValueError, IndexError):
         print('Not a A Valid Move!')
-        DrawBoard(board)
         return True
+
+
+if __name__ == '__main__':
+    start_game()
